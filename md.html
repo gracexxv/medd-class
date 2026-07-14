@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USAKUK-Site-03 | Медицинская Служба - MX-17 «Мнемосин»</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a2235;
+            --bg-card-hover: #1e293b;
+            --border-color: #1e293b;
+            --border-highlight: #2d3a4f;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --accent-soft: rgba(59, 130, 246, 0.1);
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --danger-soft: rgba(239, 68, 68, 0.1);
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Inter', system-ui, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Background Grid ── */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+
+        /* ── Navigation ── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), #1d4ed8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono);
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .nav-logo-text {
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-logo-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: var(--mono);
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 8px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 24px 60px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 100px;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-size: 0.5em;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
+            margin-top: 12px;
+            text-transform: uppercase;
+        }
+
+        .hero-desc {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-meta span::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--border-highlight);
+            border-radius: 50%;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-family: var(--mono);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        .scroll-indicator svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-muted);
+        }
+
+        /* ── Sections ── */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .card-icon.blue { background: var(--accent-soft); }
+        .card-icon.green { background: rgba(16, 185, 129, 0.1); }
+        .card-icon.amber { background: rgba(245, 158, 11, 0.1); }
+        .card-icon.red { background: var(--danger-soft); }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ── Grid ── */
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+        @media (max-width: 1024px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+
+        /* ── Stats ── */
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--mono);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .stat-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .stat-change.up {
+            color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* ── Table ── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 14px 20px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: var(--mono);
+        }
+
+        .tag-blue { background: var(--accent-soft); color: var(--accent); }
+        .tag-green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .tag-amber { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .tag-red { background: var(--danger-soft); color: var(--danger); }
+
+        /* ── List ── */
+        .check-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .check-list li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center no-repeat;
+        }
+
+        /* ── Document Block ── */
+        .doc-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .doc-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .doc-header-left h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .doc-header-left p {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: var(--mono);
+        }
+
+        .doc-body {
+            padding: 32px;
+        }
+
+        .doc-signature {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .doc-signature-name {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .doc-signature-role {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 28px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -32px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 0 4px var(--bg-primary);
+        }
+
+        .timeline-item.active .timeline-dot {
+            background: var(--accent);
+            box-shadow: 0 0 0 4px var(--bg-primary), 0 0 12px var(--accent-glow);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            margin: 80px 0;
+            border: none;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-family: var(--mono);
+        }
+
+        /* ── Reveal Animation ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Progress Bars ── */
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent), #60a5fa);
+            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .progress-label span:first-child { color: var(--text-secondary); }
+        .progress-label span:last-child { color: var(--accent); font-weight: 600; font-family: var(--mono); }
+
+        /* ── Mobile Menu ── */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">MS</div>
+                <div>
+                    <div class="nav-logo-text">Medical Services</div>
+                    <div class="nav-logo-sub">USAKUK-Site-03</div>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#hero" class="active">Главная</a></li>
+                <li><a href="#dossier">Досье препарата</a></li>
+                <li><a href="#decree">Постановление</a></li>
+                <li><a href="#protocol">Протокол</a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">ЭКСПЕРИМЕНТАЛЬНЫЙ ПРЕПАРАТ</div>
+            <h1>
+                MX-17 «Мнемосин»
+            </h1>
+            <p class="hero-desc">
+                Экспериментальный препарат когнитивного действия, разработанный Медицинской службой 
+                Аляскинского учреждения исследования, содержания и разработок.
+            </p>
+            <div class="hero-meta">
+                <span>Рег. № MX-17</span>
+                <span>Уровень допуска 2</span>
+                <span>Дата рег. 02.01.2026</span>
+                <span>MD-I-042.1</span>
+            </div>
+        </div>
+        <a href="#dossier" class="scroll-indicator">
+            <span>Прокрутить вниз</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </a>
+    </section>
+
+    <!-- Dossier Section -->
+    <section class="section" id="dossier">
+        <div class="section-header reveal">
+            <div class="section-label">Раздел I</div>
+            <h2 class="section-title">Досье медицинской разработки</h2>
+            <p class="section-subtitle">
+                Полная техническая и клиническая документация экспериментального препарата MX-17 «Мнемосин».
+            </p>
+        </div>
+
+        <!-- Overview Cards -->
+        <div class="grid grid-4 reveal" style="margin-bottom: 48px;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Регистрация</div>
+                </div>
+                <div class="card-body">
+                    <div class="stat-value">MX-17</div>
+                    <div class="stat-label">Регистрационный номер</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Допуск</div>
+                </div>
+                <div class="card-body">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Уровень доступа</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Длительность</div>
+                </div>
+                <div class="card-body">
+                    <div class="stat-value">4-6ч</div>
+                    <div class="stat-label">Время действия</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Хранение</div>
+                </div>
+                <div class="card-body">
+                    <div class="stat-value">+2°/+8°</div>
+                    <div class="stat-label">Температура хранения</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="doc-block reveal" style="margin-bottom: 48px;">
+            <div class="doc-header">
+                <div class="doc-header-left">
+                    <h3>Описание препарата</h3>
+                    <p>MD-I-042.1 | Medical Services Department | 18.06.2026</p>
+                </div>
+                <span class="tag tag-blue">ЭКСПЕРИМЕНТАЛЬНЫЙ</span>
+            </div>
+            <div class="doc-body">
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px;">
+                    MX-17 «Мнемосин» является экспериментальным препаратом когнитивного действия, разработанным 
+                    Медицинской службой Аляскинского учреждения исследования, содержания и разработок для повышения 
+                    эффективности персонала при выполнении задач, требующих повышенной концентрации внимания.
+                </p>
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px;">
+                    Разработка препарата была инициирована после анализа внутренних отчётов Научной службы, 
+                    согласно которым значительная часть исследовательских ошибок связана с переутомлением сотрудников, 
+                    снижением концентрации внимания и ухудшением способности к обработке больших объёмов информации.
+                </p>
+                <div style="background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 16px 20px; border-radius: 0 8px 8px 0;">
+                    <p style="color: var(--accent); font-size: 14px; font-weight: 500; margin: 0;">
+                        Основная цель проекта - создание безопасного средства кратковременного повышения интеллектуальной 
+                        продуктивности персонала без применения аномальных технологий и объектов.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principle of Action -->
+        <div class="grid grid-2 reveal" style="margin-bottom: 48px;">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Принцип действия</div>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 16px;">
+                        Активные компоненты препарата воздействуют на участки головного мозга, отвечающие за:
+                    </p>
+                    <ul class="check-list">
+                        <li>Кратковременную память</li>
+                        <li>Концентрацию внимания</li>
+                        <li>Скорость принятия решений</li>
+                        <li>Пространственное мышление</li>
+                        <li>Обработку больших объёмов информации</li>
+                    </ul>
+                    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                            <span style="color: var(--text-muted);">Максимальная эффективность</span>
+                            <span style="color: var(--accent); font-weight: 600; font-family: var(--mono);">15–20 мин</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px;">
+                            <span style="color: var(--text-muted);">Длительность действия</span>
+                            <span style="color: var(--accent); font-weight: 600; font-family: var(--mono);">4–6 часов</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Форма выпуска</div>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <tr>
+                            <td>Внешний вид</td>
+                            <td style="color: var(--text-primary); font-weight: 500;">Прозрачный раствор светло-голубого цвета</td>
+                        </tr>
+                        <tr>
+                            <td>Форма применения</td>
+                            <td style="color: var(--text-primary); font-weight: 500;">Внутримышечная инъекция</td>
+                        </tr>
+                        <tr>
+                            <td>Объём ампулы</td>
+                            <td style="color: var(--text-primary); font-weight: 500;">10 мл</td>
+                        </tr>
+                        <tr>
+                            <td>Условия хранения</td>
+                            <td style="color: var(--text-primary); font-weight: 500;">от +2°C до +8°C</td>
+                        </tr>
+                        <tr>
+                            <td>Срок хранения</td>
+                            <td style="color: var(--text-primary); font-weight: 500;">12 месяцев</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expected Effects -->
+        <div class="doc-block reveal" style="margin-bottom: 48px;">
+            <div class="doc-header">
+                <div class="doc-header-left">
+                    <h3>Предполагаемые эффекты</h3>
+                    <p>Клинические показатели эффективности препарата</p>
+                </div>
+                <span class="tag tag-green">ПОЛОЖИТЕЛЬНЫЕ</span>
+            </div>
+            <div class="doc-body">
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <div class="progress-label">
+                            <span>Повышение концентрации внимания</span>
+                            <span>+31%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;" data-width="31%"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-label">
+                            <span>Улучшение кратковременной памяти</span>
+                            <span>+27%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;" data-width="27%"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-label">
+                            <span>Увеличение скорости обработки информации</span>
+                            <span>+23%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;" data-width="23%"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-label">
+                            <span>Снижение ошибок при аналитических задачах</span>
+                            <span>-19%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;" data-width="19%"></div></div>
+                    </div>
+                    <div>
+                        <div class="progress-label">
+                            <span>Повышение устойчивости к умственной усталости</span>
+                            <span>Значительное</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 0%;" data-width="85%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Effects & Risk -->
+        <div class="grid grid-2 reveal">
+            <div class="card" style="border-color: rgba(245, 158, 11, 0.2);">
+                <div class="card-header">
+                    <div class="card-title">Побочные эффекты</div>
+                </div>
+                <div class="card-body">
+                    <ul class="check-list" style="margin-bottom: 16px;">
+                        <li>Головная боль</li>
+                        <li>Нарушение сна</li>
+                        <li>Повышенная тревожность</li>
+                        <li>Раздражительность</li>
+                        <li>Временные нарушения восприятия времени</li>
+                        <li>Частичная потеря краткосрочных воспоминаний после окончания действия</li>
+                    </ul>
+                    <div style="padding: 12px; background: rgba(245, 158, 11, 0.05); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.1);">
+                        <p style="font-size: 12px; color: var(--warning); margin: 0; font-weight: 500;">
+                            Все побочные эффекты носят временный характер и проходят самостоятельно.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="border-color: rgba(239, 68, 68, 0.2);">
+                <div class="card-header">
+                    <div class="card-title">Оценка рисков</div>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <tr>
+                            <td>Уровень риска</td>
+                            <td><span class="tag tag-amber">СРЕДНИЙ</span></td>
+                        </tr>
+                        <tr>
+                            <td>Тяжёлые осложнения</td>
+                            <td><span class="tag tag-green">НИЗКАЯ</span></td>
+                        </tr>
+                        <tr>
+                            <td>Временные когнитивные нарушения</td>
+                            <td><span class="tag tag-amber">СРЕДНЯЯ</span></td>
+                        </tr>
+                        <tr>
+                            <td>Угроза персоналу</td>
+                            <td><span class="tag tag-green">НИЗКАЯ</span></td>
+                        </tr>
+                    </table>
+                    <div style="margin-top: 16px; padding: 12px; background: var(--danger-soft); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.1);">
+                        <p style="font-size: 12px; color: var(--danger); margin: 0; font-weight: 500;">
+                            При возникновении угрозы здоровью - немедленное прекращение испытания.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Decree Section -->
+    <section class="section" id="decree">
+        <div class="section-header reveal">
+            <div class="section-label">Раздел II</div>
+            <h2 class="section-title">Постановление</h2>
+            <p class="section-subtitle">
+                Официальное распоряжение заместителя директора по медицине о проведении испытаний препарата MX-17.
+            </p>
+        </div>
+
+        <div class="doc-block reveal">
+            <div class="doc-header">
+                <div class="doc-header-left">
+                    <h3>Постановление о проведении испытаний</h3>
+                    <p>MD-I-042 | 18.06.2026 | Medical Services Department</p>
+                </div>
+                <span class="tag tag-red">ОБЯЗАТЕЛЬНО К ИСПОЛНЕНИЮ</span>
+            </div>
+            <div class="doc-body">
+                <div style="text-align: center; margin-bottom: 32px; padding: 20px; background: var(--bg-secondary); border-radius: 12px;">
+                    <p style="font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Medical Services Department</p>
+                    <p style="font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 600;">USAKUK-Site-03</p>
+                    <p style="font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-top: 8px;">18.06.2026 &nbsp;&nbsp;&nbsp; MD-I-042</p>
+                </div>
+
+                <p style="font-size: 16px; line-height: 1.9; color: var(--text-primary); margin-bottom: 32px;">
+                    Я, <strong style="color: var(--accent);">д-р Алекс Медицинов</strong>, заместитель директора по медицине Аляскинского учреждения 
+                    исследования, содержания и разработок, в целях изучения воздействия экспериментального препарата 
+                    <strong>MX-17 «Мнемосин»</strong> на когнитивные способности человека,
+                </p>
+
+                <div style="text-align: center; margin: 32px 0;">
+                    <h4 style="font-size: 20px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-primary);">Распоряжаюсь:</h4>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item active">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Назначение ответственного</div>
+                        <div class="timeline-desc">
+                            Сотруднику медицинской службы <strong style="color: var(--text-primary);">Лайту Релику</strong> организовать и провести 
+                            испытание экспериментального препарата MX-17 «Мнемосин».
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Назначение испытуемых</div>
+                        <div class="timeline-desc">
+                            В качестве испытуемых назначить сотрудников класса <strong style="color: var(--text-primary);">D-4895</strong> и <strong style="color: var(--text-primary);">D-2446</strong>.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Медицинское обследование</div>
+                        <div class="timeline-desc">
+                            Перед введением препарата провести полное медицинское обследование испытуемого и зафиксировать 
+                            исходные показатели его физического и психологического состояния.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Введение препарата</div>
+                        <div class="timeline-desc">
+                            Осуществить введение препарата MX-17 «Мнемосин» в дозировке <strong style="color: var(--accent);">10 мл внутримышечно</strong>.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Серия тестирований</div>
+                        <div class="timeline-desc">
+                            После введения препарата провести серию тестирований, направленных на оценку памяти, 
+                            концентрации внимания, скорости реакции и способности к обработке информации.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Непрерывное наблюдение</div>
+                        <div class="timeline-desc">
+                            На протяжении всего эксперимента обеспечить непрерывное медицинское наблюдение за испытуемым 
+                            и фиксировать любые побочные эффекты либо отклонения от нормы.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Протокол безопасности</div>
+                        <div class="timeline-desc">
+                            В случае возникновения угрозы здоровью испытуемого либо окружающего персонала немедленно 
+                            прекратить испытание и принять необходимые меры медицинского реагирования.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-title">Отчётность</div>
+                        <div class="timeline-desc">
+                            По завершении испытания подготовить подробный отчёт и представить его руководству 
+                            Медицинской службы и Научной службы учреждения.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doc-signature">
+                    <p class="doc-signature-name">A. Meditsinov</p>
+                    <p class="doc-signature-role">Заместитель директора по медицине</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Protocol Section -->
+    <section class="section" id="protocol">
+        <div class="section-header reveal">
+            <div class="section-label">Раздел III</div>
+            <h2 class="section-title">Команда проекта</h2>
+            <p class="section-subtitle">
+                Ключевые лица, ответственные за разработку и испытание препарата MX-17.
+            </p>
+        </div>
+
+        <div class="grid grid-3 reveal">
+            <div class="card" style="text-align: center;">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, var(--accent), #1d4ed8); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 30px var(--accent-glow);">👤</div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">д-р Алекс Медицинов</h4>
+                <p style="font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 8px;">Руководитель проекта</p>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Заместитель директора по медицине. Ответственен за общее руководство разработкой и утверждение протоколов испытаний.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);">👤</div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">д-р Энтони Гибсон</h4>
+                <p style="font-size: 13px; color: var(--success); font-weight: 500; margin-bottom: 8px;">Научный консультант</p>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Консультирует по научным аспектам разработки препарата и методологии клинических испытаний.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);">👤</div>
+                <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Лайт Релик</h4>
+                <p style="font-size: 13px; color: var(--warning); font-weight: 500; margin-bottom: 8px;">Организатор испытаний</p>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Сотрудник медицинской службы. Ответственен за непосредственную организацию и проведение испытаний на испытуемых.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Medical Services Department - USAKUK-Site-03</p>
+        <p style="margin-top: 8px; font-size: 11px;">MD-I-042.1 | Уровень допуска: 2 | Документ конфиденциален</p>
+    </footer>
+
+    <script>
+        // ── Scroll Reveal ──
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ── Progress Bars Animation ──
+        const progressBars = document.querySelectorAll('.progress-fill');
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const width = entry.target.getAttribute('data-width');
+                    entry.target.style.width = width;
+                }
+            });
+        }, { threshold: 0.5 });
+
+        progressBars.forEach(bar => progressObserver.observe(bar));
+
+        // ── Navbar Active State ──
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Navbar background on scroll
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 14, 23, 0.95)';
+            } else {
+                navbar.style.background = 'rgba(10, 14, 23, 0.85)';
+            }
+        });
+
+        // ── Smooth Scroll for Anchor Links ──
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ── Parallax Grid ──
+        window.addEventListener('scroll', () => {
+            const grid = document.querySelector('.bg-grid');
+            const scrolled = window.pageYOffset;
+            grid.style.transform = `translateY(${scrolled * 0.3}px)`;
+        });
+    </script>
+</body>
+</html>
